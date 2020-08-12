@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 function InputSample() {
   const [inputs, setInputs] = useState({
     name: "",
     nickname: "",
   });
-  // useState가 여러 개 일 때는 객체를 만들어서 상태 값을 받아온다.
 
+  // useState가 여러 개 일 때는 객체를 만들어서 상태 값을 받아온다.
   const { name, nickname } = inputs;
 
   const onChange = (e) => {
@@ -30,16 +30,25 @@ function InputSample() {
     });
   };
 
+  const nameInput = useRef();
+
   const onReset = () => {
     setInputs({
       name: "",
       nickname: "",
     });
+    nameInput.current.focus(); // focus nameinput에 적용함
   };
 
   return (
     <div>
-      <input name="name" placeholder="이름" onChange={onChange} value={name} />
+      <input
+        name="name"
+        placeholder="이름"
+        onChange={onChange}
+        value={name}
+        ref={nameInput} /*DOM에 직접 접근함 */
+      />
       <input
         name="nickname"
         placeholder="닉네임"
