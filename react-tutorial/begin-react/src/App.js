@@ -1,11 +1,11 @@
 import React from 'react';
-import Counter from './Counter';
+import InputSample from './InputSample'
 
 function App() {
 
   // 아래는 JSX 
   return (
-    <Counter />
+    <InputSample />
   );
 }
 
