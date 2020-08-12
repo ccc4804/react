@@ -1,29 +1,58 @@
-import React, {useState} from 'react'
+import React, { useState } from "react";
 
-function InputSample(){
-    const [text, setText] = useState('')
-    // ''인 컴포넌트의 정보를 불러온다.
+function InputSample() {
+  const [inputs, setInputs] = useState({
+    name: "",
+    nickname: "",
+  });
+  // useState가 여러 개 일 때는 객체를 만들어서 상태 값을 받아온다.
 
-    const onChange = (e) => {
-        setText(e.target.value)  
-        // e.target은 이벤트가 일어난 target의 DOM 정보를 가지고 있다.
-        // e.target.value는 해당 이벤트가 일어난 곳의 값을 의미한다.
-    }
+  const { name, nickname } = inputs;
 
-    const onReset = () => {
-        setText('')
-    }
+  const onChange = (e) => {
+    const { name, value } = e.target;
 
-    return (
-        <div>
-            <input onChange={onChange} value = {text}/>
-            <button onClick={onReset} >초기화</button>
-            <div>
-                <b>값: </b>
-                {text}
-            </div>
-        </div>
-    )
+    /*
+        const nextInputs = {
+            ...inputs,
+            [name]: value //[] 대괄호는 객체마다 key를 의미한다.
+        }
+
+        setInputs(nextInputs)
+        */
+
+    // 위와 동일한 클린 코드이다.
+    // 불변성을 지키기 위해서 객체를 복사해와서 특정 값을 변경해야한다.
+    // 이렇게 해야 컴포넌트 최적화가 된다.
+    setInputs({
+      ...inputs,
+      [name]: value,
+    });
+  };
+
+  const onReset = () => {
+    setInputs({
+      name: "",
+      nickname: "",
+    });
+  };
+
+  return (
+    <div>
+      <input name="name" placeholder="이름" onChange={onChange} value={name} />
+      <input
+        name="nickname"
+        placeholder="닉네임"
+        onChange={onChange}
+        value={nickname}
+      />
+      <button onClick={onReset}>초기화</button>
+      <div>
+        <b>값: </b>
+        {name} ({nickname})
+      </div>
+    </div>
+  );
 }
 
-export default InputSample
+export default InputSample;
