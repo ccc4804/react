@@ -3,15 +3,16 @@ import UserList from "./UserList";
 import CreateUser from "./CreateUser";
 
 function App() {
-  const [inputs, setInpust] = useState({
+  const [inputs, setInputs] = useState({
     username: "",
     email: "",
   });
 
   const { username, email } = inputs;
+
   const onChange = (e) => {
     const { name, value } = e.target;
-    setInpust({
+    setInputs({
       ...inputs,
       [name]: value,
     });
@@ -22,16 +23,19 @@ function App() {
       id: 1,
       username: "hee",
       email: "test1@test.com",
+      active: true
     },
     {
       id: 2,
       username: "yoon",
       email: "test2@test.com",
+      active: false
     },
     {
       id: 3,
       username: "hw",
       email: "test3@test.com",
+      active: false
     },
   ]);
 
@@ -48,16 +52,23 @@ function App() {
     //setUsers([...users, user])
     setUsers(users.concat(user));
 
-    setInpust({
+    setInputs({
       username: "",
       email: "",
     });
+
     console.log(nextId.current);
     nextId.current += 1;
   };
 
   const onRemove = id => {
     setUsers(users.filter(user => user.id !== id))
+  }
+
+  const onToggle = id => {
+    setUsers(users.map(
+      user => user.id === id ? {...user, active: !user.active} : user
+    ))
   }
 
   // 아래는 JSX
@@ -69,7 +80,7 @@ function App() {
         onChange={onChange}
         onCreate={onCreate}
       />
-      <UserList users={users} onRemove={onRemove} />
+      <UserList users={users} onRemove={onRemove} onToggle={onToggle} />
     </>
   );
 }
