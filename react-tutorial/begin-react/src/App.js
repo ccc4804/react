@@ -1,8 +1,23 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import UserList from "./UserList";
+import CreateUser from "./CreateUser";
 
 function App() {
-  const users = [
+  const [inputs, setInpust] = useState({
+    username: "",
+    email: "",
+  });
+
+  const { username, email } = inputs;
+  const onChange = (e) => {
+    const { name, value } = e.target;
+    setInpust({
+      ...inputs,
+      [name]: value,
+    });
+  };
+
+  const [users, setUsers] = useState([
     {
       id: 1,
       username: "hee",
@@ -18,17 +33,41 @@ function App() {
       username: "hw",
       email: "test3@test.com",
     },
-  ];
+  ]);
 
   const nextId = useRef(4);
 
   const onCreate = () => {
+    const user = {
+      id: nextId.current,
+      username,
+      email,
+    };
+
+    //배열이 불변이 되어야 하므로 배열 추가 시 새로운 배열이 만들어지는 spread, concat등을 사용해야한다.
+    //setUsers([...users, user])
+    setUsers(users.concat(user));
+
+    setInpust({
+      username: "",
+      email: "",
+    });
     console.log(nextId.current);
     nextId.current += 1;
-  }
+  };
 
   // 아래는 JSX
-  return <UserList users={users} />;
+  return (
+    <>
+      <CreateUser
+        username={username}
+        email={email}
+        onChange={onChange}
+        onCreate={onCreate}
+      />
+      <UserList users={users} />
+    </>
+  );
 }
 
 export default App;
