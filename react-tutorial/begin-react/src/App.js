@@ -1,11 +1,11 @@
 import React from 'react';
-import InputSample from './InputSample'
+import UserList from './UserList';
 
 function App() {
 
   // 아래는 JSX 
   return (
-    <InputSample />
+    <UserList />
   );
 }
 
