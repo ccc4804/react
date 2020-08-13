@@ -1,6 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useMemo } from "react";
 import UserList from "./UserList";
 import CreateUser from "./CreateUser";
+
+function countActiveUsers(users) {
+  console.log("활성 사용자 수를 세는 중...");
+  return users.filter((user) => user.active).length;
+}
 
 function App() {
   const [inputs, setInputs] = useState({
@@ -23,19 +28,19 @@ function App() {
       id: 1,
       username: "hee",
       email: "test1@test.com",
-      active: true
+      active: true,
     },
     {
       id: 2,
       username: "yoon",
       email: "test2@test.com",
-      active: false
+      active: false,
     },
     {
       id: 3,
       username: "hw",
       email: "test3@test.com",
-      active: false
+      active: false,
     },
   ]);
 
@@ -61,15 +66,20 @@ function App() {
     nextId.current += 1;
   };
 
-  const onRemove = id => {
-    setUsers(users.filter(user => user.id !== id))
-  }
+  const onRemove = (id) => {
+    setUsers(users.filter((user) => user.id !== id));
+  };
 
-  const onToggle = id => {
-    setUsers(users.map(
-      user => user.id === id ? {...user, active: !user.active} : user
-    ))
-  }
+  const onToggle = (id) => {
+    setUsers(
+      users.map((user) =>
+        user.id === id ? { ...user, active: !user.active } : user
+      )
+    );
+  };
+
+  // useMemo를 사용하면 특정 deps만 인식하여 처리한다.
+  const count = useMemo(() => countActiveUsers(users),[users]);
 
   // 아래는 JSX
   return (
@@ -81,6 +91,7 @@ function App() {
         onCreate={onCreate}
       />
       <UserList users={users} onRemove={onRemove} onToggle={onToggle} />
+      <div>활성 사용자 수 : {count}</div>
     </>
   );
 }
