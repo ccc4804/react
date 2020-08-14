@@ -1,18 +1,30 @@
-import React, { UseState, useState } from "react";
+import React, { useReducer } from "react";
+
+function reducer(state, action){
+  switch(action.type){
+    case 'INCREMENT':
+      return state + 1;
+    case 'DECREMENT':
+      return state - 1;
+    default:
+      throw new Error('Unhandled action')
+  }
+}
 
 function Counter() {
-  // number라는 상태를 만드는데 이 상태의 기본 값은 0으로 설정
-  // setNumber는 기본 값으로 바꿔주는 함수
-  const [number, setNumber] = useState(0);
+  // dispatch : 액션을 발생 시킨다.
+  // useReducer(reducer,0) => reducer 함수를 불러오고 초기값은 0이다.
+  const [number, dispatch] = useReducer(reducer, 0)
+
   const onIncrease = () => {
-    //setNumber(number + 1)
-    setNumber((prevNumber) => prevNumber + 1); //함수형 업데이트로 작성한다. 최적화와 관련 있는데 뒤에 배운다.
-    console.log("+1");
+    dispatch({
+      type: 'INCREMENT'
+    })
   };
   const onDecrease = () => {
-    //setNumber(number - 1)
-    setNumber((prevNumber) => prevNumber - 1);
-    console.log("-1");
+    dispatch({
+      type: 'DECREMENT'
+    })
   };
 
   return (
