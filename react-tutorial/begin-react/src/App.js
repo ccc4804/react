@@ -55,7 +55,7 @@ function App() {
 
     //배열이 불변이 되어야 하므로 배열 추가 시 새로운 배열이 만들어지는 spread, concat등을 사용해야한다.
     //setUsers([...users, user])
-    setUsers(users.concat(user));
+    setUsers(users => users.concat(user));
 
     setInputs({
       username: "",
@@ -64,19 +64,19 @@ function App() {
 
     console.log(nextId.current);
     nextId.current += 1;
-  },[username, email, users]);
+  },[username, email]);
 
   const onRemove = useCallback((id) => {
-    setUsers(users.filter((user) => user.id !== id));
-  },[users]);
+    setUsers(users => users.filter((user) => user.id !== id));
+  },[]);
 
   const onToggle = useCallback((id) => {
-    setUsers(
+    setUsers(users =>
       users.map((user) =>
         user.id === id ? { ...user, active: !user.active } : user
       )
     );
-  },[users]);
+  },[]);
 
   // useMemo를 사용하면 특정 deps만 인식하여 처리한다.
   const count = useMemo(() => countActiveUsers(users),[users]);
