@@ -6,7 +6,7 @@ function CreateUser({ username, email, onChange, onCreate }) {
     <div>
       <input
         name="username"
-        placeholder="개정명"
+        placeholder="계정명"
         onChange={onChange}
         value={username}
       />
