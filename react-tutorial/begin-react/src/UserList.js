@@ -1,9 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
+//import useInputs from "./useInputs";
+import { UserDispatch } from './App'
 
-const User = React.memo(function User({ user, onRemove, onToggle }) {
+const User = React.memo(function User({ user }) {
   //props로 받아온다.
-
   const { username, email, id, active } = user;
+
+  // App에서 지정한 UserDispatch를 불러와서 dispatch Context에 넣어준다.
+  const dispatch = useContext(UserDispatch)
 
   /*
   useEffect(()=>{
@@ -42,17 +46,25 @@ const User = React.memo(function User({ user, onRemove, onToggle }) {
           color: active ? "green" : "black",
           cursor: "pointer", //curson가 pointer이면 마우스를 올렸을 때 손가락 모양이 된다.
         }}
-        onClick={() => onToggle(id)}
+        // App 컴포넌트에서 불러온 dispatch context에 onClick을 정의해준다.
+        onClick={() => dispatch({
+          type: 'TOGGLE_USER',
+          id
+        })}
       >
         {username}
       </b>{" "}
       <span>({email})</span>
-      <button onClick={() => onRemove(id)}>삭제</button>
+      {/* App 컴포넌트에서 불러온 dispatch context에 onClick을 정의해준다. */}
+      <button onClick={() => dispatch({
+        type: 'REMOVE_USER',
+        id
+      })}>삭제</button>
     </div>
   );
 });
 
-function UserList({ users, onRemove, onToggle }) {
+function UserList({ users }) {
   return (
     /*
     <div>
@@ -67,8 +79,6 @@ function UserList({ users, onRemove, onToggle }) {
         <User
           user={user}
           key={user.id}
-          onRemove={onRemove}
-          onToggle={onToggle}
         />
         //key가 있으면 key를 설정해준다.
         //key가 없으면 key={index}로 설정해주는데 이는 매우 비효율적인 구조이다.

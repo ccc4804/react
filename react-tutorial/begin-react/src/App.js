@@ -1,4 +1,4 @@
-import React, { useRef, useReducer, useMemo, useCallback } from "react";
+import React, { useRef, useReducer, useMemo, useCallback, createContext } from "react";
 import UserList from "./UserList";
 import CreateUser from "./CreateUser";
 import useInputs from './useInputs'
@@ -56,6 +56,9 @@ function reducer(state, action) {
   }
 }
 
+// 외부의 컴포넌트에서 사용 가능하게 context를 export 해준다.
+export const UserDispatch = createContext(null);
+
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -88,34 +91,21 @@ function App() {
     [username, email, reset]
   );
 
-  const onToggle = useCallback((id) => {
-    dispatch({
-      type: "TOGGLE_USER",
-      id,
-    });
-  }, []);
-
-  const onRemove = useCallback((id) => {
-    dispatch({
-      type: "REMOVE_USER",
-      id,
-    });
-  }, []);
-
   const count = useMemo(() => countActiveUsers(users), [users]);
 
   // 아래는 JSX
   return (
-    <>
+    // UserDispatch Context의 value에 dispatch를 지정해준다.
+    <UserDispatch.Provider value = {dispatch}>
       <CreateUser
         username={username}
         email={email}
         onChange={onChange}
         onCreate={onCreate}
       />
-      <UserList users={users} onToggle={onToggle} onRemove={onRemove} />
+      <UserList users={users} />
       <div>활성 사용자 수 : {count}</div>
-    </>
+    </UserDispatch.Provider>
   );
 }
 
