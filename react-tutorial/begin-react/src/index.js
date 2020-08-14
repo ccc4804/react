@@ -3,13 +3,11 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import Counter from './Counter'
 
 // DOM에서 id가 root인 애를 찾아서 react App을 넣겠다.
 ReactDOM.render(
   <React.StrictMode>
-    {/*<App />*/}
-    <Counter />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );
