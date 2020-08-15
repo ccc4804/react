@@ -1,7 +1,29 @@
-import React from "react";
+import React, {useRef, useContext} from "react";
+import {UserDispatch} from './App'
+import useInputs from './useInputs'
 
-function CreateUser({ username, email, onChange, onCreate }) {
-  //필요한것은 props로 받아와서 쓸것
+function CreateUser() {
+  const [{username, email}, onChange, reset] = useInputs({
+    username:'',
+    email:''
+  })
+  const dispatch = useContext(UserDispatch)
+
+  const nextId = useRef(4)
+
+  const onCreate = () => {
+    dispatch({
+      type:'CREATE_USER',
+      user: {
+        id:nextId.current,
+        username,
+        email,
+      }
+    })    
+    reset()
+    nextId.current += 1
+  }
+
   return (
     <div>
       <input
