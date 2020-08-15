@@ -1,6 +1,10 @@
-import React, { useRef, useReducer, useMemo, useCallback, createContext } from "react";
+import React, { useReducer, useMemo, createContext } from "react";
 import UserList from "./UserList";
 import CreateUser from "./CreateUser";
+import produce from 'immer';
+
+// 크롬의 콘솔창에서 immer (produce)를 사용할 수 있게 설정함
+window.produce =  produce
 
 function countActiveUsers(users) {
   console.log("활성 사용자 수를 세는 중...");
@@ -61,41 +65,7 @@ export const UserDispatch = createContext(null);
 function App() {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  //삭제되는부분
-  /*
-  const [form, onChange, reset] = useInputs({
-    username: '',
-    email:''
-  })
-
-  const {username, email} = form;
-  
-
-  // 기존에 3개의 유저가 등록 되어있으므로 다음 id 값인 4가 기본값이다.
-  const nextId = useRef(initialState.users.length + 1);
-  // const nextId = useRef(4);
-  */
-
   const { users } = state;
-
-  //삭제되는부분
-  /*
-  const onCreate = useCallback(
-    (e) => {
-      dispatch({
-        type: "CREATE_USER",
-        user: {
-          id: nextId.current,
-          username,
-          email,
-        },
-      });
-      nextId.current += 1;
-      reset()
-    },
-    [username, email, reset]
-  );
-    */
 
   const count = useMemo(() => countActiveUsers(users), [users]);
 
